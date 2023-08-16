@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block editAbleNav %}
+    {% if endpoint != 'products'%}
+    <li class="nav-item"><a class="nav-link" href="{{url_for('products')}}">All Products</a></li>
+    {%endif%}
+<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+      Brands
+    </a>
+    <div class="dropdown-menu">
+        {% for brand in brands %}
+        <a class="dropdown-item" href="{{url_for('get_brand',id=brand.id)}}">{{brand.name}}</a>
+        {% endfor %}
+    </div>
+  </li>
+
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+      Categories
+    </a>
+    <div class="dropdown-menu">
+        {% for cat in category %}
+        <a class="dropdown-item" href="{{url_for('get_category',id=cat.id)}}">{{cat.name}}</a>
+        {% endfor %}
+    </div>
+  </li>
+
+
+{% endblock editAbleNav %}
+
+{% block page_content %}
+<div class="container-fluid" style="margin: auto;">
+  <!-- set namespace object -->
+  {% set ns=namespace(subtotal=0) %}
+  <h2 class="text-center mt-3">CART SUMMARY</h2>
+  
+  <!-- new line -->
+  {% for key, product in cart.items() %}
+  {# to get the total price of items per cart#}
+
+  {% set total= (product.quantity * product.price)%}
+  {% set ns.subtotal = ns.subtotal + total%}
+
+
+  {% set cartquantity = product.quantity %}
+  <div class="container" style="display: flex; justify-content: space-between; align-items:center;margin-top: 20px;">
+    <h5> Total price for {{product.name}}:</h3>
+    <h5>${{ total}}</h3>
+    <h5> qty({{cartquantity}})</h3>
+  </div>
+  <div class="card mb-3" style=" border-radius: 10px;">
+    {% for color , qty in product.colors.items() %}
+    <!-- please remember to cross check the css style displaying the image  -->
+    <div  style="display: flex; align-items: center; justify-content: space-around;">
+      <div class="cart-img" style="background-image: url('{{url_for('static', filename='uploads/images/' + product.image)}}');">
+        <!-- <img src="{{url_for('static', filename='uploads/images/' + product.image)}}" class="card-img" alt="{{product.name}}" style="border-radius: 20px; margin: 0px; align-self: flex-end;max-width:fit-content; max-height:100px;"> -->
+      </div>
+      <div class="card-body ">
+          <h3 class="card-title"> {{product.name}} </h3>
+          <h4  class="card-text">Price: ${{product.price}} </h4>
+          <!-- <h4  class="card-text">Quantity: {{product.quantity}} </h4> -->
+          <h4  class="card-text">Color: {{color}} </h4>
+          
+      </div>
+    </div>
+    <div class="card-footer text-center" style="display: flex; justify-content: space-between; align-items: center;border-bottom: 3px solid rgb(194, 183, 211); border-bottom-right-radius: 20px;border-bottom-left-radius: 5px;">
+      <a href="{{url_for('remove_cart',id=key, color=color)}}" class="btn btn-danger">remove item</a>
+      <div style="display: flex;">
+        <form action="{{url_for('addcart')}}" method='POST' style="margin-right: 20px;">
+          {% if product.quantity==1 or qty==1 %}
+          <button type="submit" class=" btn btn-primary" disabled>-</button>
+          {%else%}
+          <button type="submit" class=" btn btn-primary">-</button>
+          {% endif %}
+          <input type="hidden" name="product_id" value="{{product.id}}">
+          <input type="hidden" name="quantity" id="" value="-1" >
+          <input type="hidden" name="colors" value="{{color}}">
+      </form>
+      <h4  class="card-text"> {{qty}} </h4>
+      <form action="{{url_for('addcart')}}" method='POST' style="margin-left: 20px;">
+          <button type="submit" class=" btn btn-primary">+</button>
+          <input type="hidden" name="product_id" value="{{product.id}}">
+          <input type="hidden" name="quantity" id="" value="1" >
+          <input type="hidden" name="colors" value="{{color}}">
+      </form>
+      </div>
+    </div>      
+      
+    {% endfor %}
+</div>
+{% endfor %}
+</div>
+<hr style="border-bottom: 3px solid white;">
+<div style="display: flex; justify-content: space-between; padding-bottom: 20px;">
+  <h3>Subtotal: ${{ ns.subtotal}}</h3>
+  <h3>Tax: {{tax}}</h3>
+  <h3>Grand Total: ${{grandtotal}}</h3>
+</div>
+<div style="display: flex; justify-content: space-between; align-items: center;">
+  <a href="{{url_for('clear_cart')}}" class=" text-center btn btn-outline-danger text-center" style="text-align: center;font-size: medium;">Clear Cart</a>
+  <a href="{{url_for('add_order')}}" class="btn btn-success text-center btn-lg btn-block mt-3 ml-3 mr-3 mb-3">Check Out</a>
+  <a href="{{url_for('products')}}" class=" text-center btn btn-outline-warning " style="text-align: center; font-size: medium;">Shop more</a>
+</div>
+<hr>
+
+{% endblock page_content %}

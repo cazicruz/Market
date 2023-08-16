@@ -1,0 +1,98 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    list-style: none;
+
+}
+
+body{
+    font-size: 12px;
+    background: #f5f5f5;
+}
+#nav{
+
+    font-size: 12px;
+
+    border-bottom: 1px solid #e0e0e0;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.05);
+}
+
+/* nav{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    padding: 0 20px;
+    height: 60px;
+    border-bottom: 1px solid #e0e0e0;
+    box-shadow: 0 1px 1px rgba(0,0,0,0.05);
+}
+.nav-links{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    justify-self: flex-end;
+}
+nav ul li, a{
+    padding: 10px;
+    text-decoration: none;
+} */
+.card{
+    box-shadow: 0 2px 3px rgba(0,0,0,0.05);
+}
+.form-container{
+    margin-top: 50px;
+   padding: 10px;
+    max-width: 40%;
+    background: gainsboro;
+    border-radius: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow:gray 0px 2px 5px ;
+}
+.bigger_text{
+    font-size: 20px;
+    color: indigo;
+}
+
+.form-sign-up{
+    padding:10px;
+}
+.form-sign-up .file-input{
+    padding: 20px 0;
+}
+.edit{
+    background-color: aqua;
+    color: #0c0c0c;
+
+}
+.delete{
+    background-color: rgb(239, 40, 40);
+    color: #fff;
+    outline:#0c0c0c;
+}
+.edit:hover{
+    background-color: rgb(3, 222, 145);
+}
+.delete:hover{
+    background-color: rgb(251, 73, 103);
+}
+
+
+/* cart style css */
+.cart-img{
+    width: 150px;
+    height: 100px;
+    border-radius:10px;
+    margin-left:5px;
+    margin-top: 3px;
+    background-size:cover;
+    background-repeat:no-repeat;
+    background-position:center;
+
+}

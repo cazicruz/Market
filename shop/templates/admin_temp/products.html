@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+<div class="container-fluid">
+    <table class="table table-sm table-condensed table-striped table-hover table-responsive-sm">
+        <thead>
+            <th>S/N</th>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Discount</th>
+            <th>Brand</th>
+            <th>Category</th>
+            <th>Image</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </thead>
+        <tbody>
+            {% if products %}
+            {% for product in products %}
+            <tr>
+                <td>{{loop.index}}</td>
+                <td>{{product.product_name}}</td>
+                <td>{{product.price}}</td>
+                <td>{{product.discount}}%</td>
+                <td>{{product.brand.name}}</td>
+                <td>{{product.category.name}}</td>
+                <td><img src="{{url_for('static', filename='uploads/images/' + product.image_1)}}" width="30" height="40"> <br></td>
+                <td><a href="{{url_for('update_product', id=product.id)}}" class="btn btn-sm btn-outline-info edit">Edit</a></td>
+                <td>
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#staticBackdrop-{{product.id}}">
+                        Delete
+                    </button>
+                </td>
+                <!-- Modal -->
+                <div class="modal fade" id="staticBackdrop-{{product.id}}" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title" id="staticBackdropLabel"><strong>Delete {{product.product_name}}</strong></h3>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <span class="text-danger">Are you sure you want to continue with this??
+                                <br> If you continue <strong class="text-success">{{product.product_name}}</strong> would be deleted permanently.</span>
+                        </div>
+                        <div class="modal-footer" style="display: flex; align-content: flex-end; justify-content: right;">
+                        <button type="button" class="btn btn-warning" data-dismiss="modal" style="margin-right:20px">Close</button>
+                        <form action="{{url_for('deleteproduct', id=product.id)}}" method="POST">
+                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                        </form>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+                {% endfor %}
+            {% endif    %}
+        </tbody>
+    </table>
+</div>
+  
+{% endblock page_content %}

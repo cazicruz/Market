@@ -1,0 +1,59 @@
+{% extends "./cart_temp/cart.html" %}
+
+{% block page_content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-12">
+            Invoice: {{orders.invoice}}
+            <br>
+            status: {{orders.status}}
+            <br>
+            customer Name: {{customer.name}}
+            <br>
+            customer Email: {{customer.email}}
+            <br>
+            <br>
+            <table class="table table-sm">
+                <thead>
+                    <th>Sr</th>
+                    <th>Name</th>
+                    <th>Color(s)</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Subtotal</th>
+                </thead>
+                <tbody>
+                    <tr>
+                    {% for key, prod in orders.orders.items() %}
+                    <td>{{loop.index}}</td>
+                    
+                        <td> {{prod.name}} </td>
+                        <td>{% for color,qty in prod.colors.items() %}
+                            {% if qty == 1%}
+                                {{color}},
+                            {%else%}
+                                {{qty}} {{color}},
+                            {%endif%}
+                            {%endfor%}
+                        </td>
+                        <td>{{prod.price}} </td>
+                        <td>{{prod.quantity}} </td>
+                        {%set subtotal = prod.quantity * prod.price| float %}
+                    <td>${{"%.2f"|format(subtotal|round(1,'floor'))}} </td>
+                    </tr>
+                    {% endfor%}
+                </tbody>
+            </table>
+            <table class="table table-sm">
+                <tr>
+                    <td><a href="" class="btn btn-success">Checkout</a></td>
+                    <td width="35%"></td>
+                    <td><h5>Tax: ${{tax}}</h5></td>
+                    <td><h5>Grand Total: ${{grandtotal}} </h5></td>
+                    <td><a href="" class="btn btn-danger">print PDF</a></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock page_content %}

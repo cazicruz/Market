@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+
+{% block editAbleNav %}
+    {% if endpoint != 'products'%}
+    <li class="nav-item">
+        <a class="nav-link" href="{{url_for('products')}}">All Products</a>
+    </li>
+    {%endif%}
+<li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+      Brands
+    </a>
+    <div class="dropdown-menu">
+        {% for brand in brands %}
+        <a class="dropdown-item" href="{{url_for('get_brand',id=brand.id)}}">{{brand.name}}</a>
+        {% endfor %}
+    </div>
+  </li>
+
+  <li class="nav-item dropdown">
+    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
+      Categories
+    </a>
+    <div class="dropdown-menu">
+        {% for cat in category %}
+        <a class="dropdown-item" href="{{url_for('get_category',id=cat.id)}}">{{cat.name}}</a>
+        {% endfor %}
+    </div>
+  </li>
+
+
+{% endblock editAbleNav %}
+
+
+{% block page_content %}
+
+<div class="container mt-5">
+    <div class="row">
+        {% for product in products.items %}
+        <div class="col-md-4 mt-4">
+            <div class="card mt-3" style="border-radius: 10px;">
+                <img src="{{url_for('static', filename='uploads/images/' + product.image_1)}}" alt="{{product.product_name}}"width="100" height="150" class="card-img-top" style="border-radius: 10px;">
+                <div class="card-body">
+                    <h5 class="text-left card-text">{{product.product_name}}</h5>
+                    <h4 class="text-left card-text" style="display: inline;">$ {{product.price}}</h4>
+                    {% if product.discount %}
+                    <p style="background-color: brown; color: aliceblue;border-radius: 50%;padding:9px 2px; display: inline;position:relative;"> -{{product.discount}}%</p>
+                    {%endif%}
+                </div>
+                <div class="card-footer">
+                    <a href="{{url_for('product_details', id=product.id)}}" class="float-left btn btn-primary">Details</a>
+                    <form action="{{url_for('addcart')}}" method='POST'>
+                        <button type="submit" class="float-right btn btn-warning">Add to Cart</button>
+                        <input type="hidden" name="product_id" value="{{product.id}}">
+                        <input type="hidden" name="quantity" id="" value="1" >
+                        {% set colors = product.colors.split(',') %}
+                            <select  name="colors" id="" style="visibility:hidden;">
+                            {% for color in colors %}
+                            {% set col = color.split(':') %}
+                            <option  value="{{col[0]}}">{{col[0]|capitalize}}</option>
+                            {% endfor %}
+                            </select>
+                    </form>            
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <!-- ====================================pagination==================================== -->
+    <div class="row">
+        <div class="col-md-12 text-center mt-3">
+            <!-- for previous -->
+            {% if products.has_prev %}
+                {% if endpoint == 'get_category' %}
+                <a href="{{url_for('get_category',id=cat.id,page=products.prev_num)}}" class="btn btn-outline-info">prev </a>
+                {% else %}
+                    {% if endpoint == 'get_brand' %}
+                        <a href="{{url_for('get_brand',id=brand.id,page=products.prev_num)}}" class="btn btn-outline-info">prev </a>
+                    {% else %}
+                        <a href="{{url_for('products',page=products.prev_num)}}" class="btn btn-outline-info">prev </a>
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+            <!-- for page numbers -->
+            {% if products.total > 1 %}
+                {% for page_num in products.iter_pages(left_edge=1, right_edge=2, left_current=1, right_current=2) %}
+                    {% if page_num %}
+                        {% if products.page == page_num %}
+                            <span class="btn btn-info"> {{page_num}}</span>
+                        {% else %}
+                        <!-- for accessing pages by numbers -->
+                        {% if endpoint == 'get_category' %}
+                            <a href="{{url_for('get_category',id=cat.id,page=page_num)}}" class="btn btn-outline-info">{{page_num}} </a>
+                            {% else %}
+                                {% if endpoint == 'get_brand' %}
+                                    <a href="{{url_for('get_brand',id=brand.id,page=page_num)}}" class="btn btn-outline-info">{{page_num}} </a>
+                                {% else %}
+                                <a href="{{url_for('products',page=page_num)}}" class="btn btn-outline-info"> {{page_num}}</a>
+                                {% endif %}
+                            {% endif %}
+                        {% endif %}
+                    {% else %}
+                        <span>...</span>
+                    {% endif %}
+                {% endfor%}
+            {% endif %}
+
+            <!-- ===========for next============ -->
+            {% if products.has_next %}
+                {% if endpoint == 'get_category' %}
+                    <a href="{{url_for('get_category',id=cat.id,page=products.next_num)}}" class="btn btn-outline-info">next </a>
+                    {% else %}
+                        {% if endpoint == 'get_brand' %}
+                            <a href="{{url_for('get_brand',id=brand.id,page=products.next_num)}}" class="btn btn-outline-info">next </a>
+                        {% else %}
+                            <a href="{{url_for('products',page=products.next_num)}}" class="btn btn-outline-info">next </a>
+                       {% endif %}
+                {% endif %}
+            {% endif %}
+        </div>
+</div>
+{% endblock %}

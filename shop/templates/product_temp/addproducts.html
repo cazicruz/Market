@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block page_content %}
+<div class="container ">
+<div class="row">
+<div class=" col-md-3"></div>
+<div class="container-fluid col-md-6 mt-5">
+  <h2 class=" text-center"> Add Products</h3>
+  <!-- {{wtf.quick_form(form)}} -->
+  {% from "_formhelpers.html" import render_field %}
+  <form action="" method="POST" enctype="multipart/form-data">
+    {{ render_field(form.name, class="form-control", placeholder="Add Product Name")}}
+    {{ render_field(form.price, class="form-control", placeholder="Add Product Price")}}
+    {{ render_field(form.discount, class="form-control", placeholder="Add Product Discount")}}
+    {{ render_field(form.stock, class="form-control", placeholder="Add Product Stock")}}
+
+    <label for="brand">Add Product's Brand</label>
+    <select name="brand" id="brand" class="form-control" required>
+      <option value="">--Select Brand--</option>
+      {% for brand in brands %}
+      <option value="{{brand.id}}">{{brand.name}}</option>
+      {% endfor %}
+    </select>
+
+
+    <label for="category">Add Product's Category</label>
+    <select name="category" id="category" class="form-control" required>
+      <option value="">--Select Category--</option>
+      {% for cat in category %}
+      <option value="{{cat.id}}">{{cat.name}}</option>
+      {% endfor %}
+    </select>
+    {{ render_field(form.colors, class="form-control", placeholder="Add Product colors", rows="1")}}
+    {{ render_field(form.description, class="form-control", placeholder="Add Product Description", rows="6")}}
+
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-6">{{ render_field(form.image_1, class="form-control" )}}</div>
+        <div class="col-md-6">{{ render_field(form.image_2, class="form-control")}}</div>
+        <div class="col-md-6">{{ render_field(form.image_3, class="form-control")}}</div>
+        <div class="col-md-6">{{ render_field(form.image_4, class="form-control")}}</div>
+      </div>
+    </div>
+
+
+
+    <button type="submit" class="btn btn-info" style="margin-top:10px; border-radius: 10px;">Add Products</button>
+
+  </form>
+</div>
+<div class="col-md-3"></div>
+</div>
+</div>
+{% endblock %}

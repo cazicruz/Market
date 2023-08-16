@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block page_content %}
+<div class="container-fluid">
+<table class="table table-sm table-condensed table-striped table-hover table-responsive-sm">
+    <thead>
+        <th>S/N</th>
+        <th>Name</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </thead>
+    <tbody>
+        {% if brands %}
+        {% for brand in brands %}
+        <tr>
+            <td>{{loop.index}}</td>
+            <td>{{brand.name}}</td>
+            <td><a href="{{url_for('update_brand', id=brand.id)}}" class="btn btn-sm btn-outline-info edit">Edit</a></td>
+            <td>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#staticBackdrop-{{brand.id}}">
+                    Delete
+                </button>
+            </td>
+        </tr>
+        <!-- Modal -->
+      <div class="modal fade" id="staticBackdrop-{{brand.id}}" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+                  <h3 class="modal-title" id="staticBackdropLabel"><strong>Delete {{brand.name}}</strong></h3>
+              </div>
+              <div class="modal-body">
+                  <span class="text-danger">Are you sure you want to continue with this??
+                      <br> If you continue <strong class="text-success">{{brand.name}}</strong> would be deleted permanently.</span>
+              </div>
+              <div class="modal-footer" style="display: flex; align-content: flex-end; justify-content: right;">
+              <button type="button" class="btn btn-warning" data-dismiss="modal" style="margin-right:20px">Close</button>
+              <form action="{{url_for('deletebrand', id=brand.id)}}" method="POST">
+                  <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+              </form>
+              </div>
+          </div>
+          </div>
+      </div>
+        {% endfor %}
+        {% else %}
+        {% for category in categories %}
+        <tr>
+            <td>{{loop.index}}</td>
+            <td>{{category.name}}</td>
+            <td><a href="{{url_for('update_category',id=category.id)}}" class="btn btn-sm btn-outline-info edit">Edit</a></td>
+            <td>
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#staticBackdrop-{{category.id}}">
+                    Delete
+                </button>
+            </td>
+        </tr>
+        <!-- Modal -->
+      <div class="modal fade" id="staticBackdrop-{{category.id}}" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                  </button>
+                  <h3 class="modal-title" id="staticBackdropLabel"><strong>Delete {{category.name}}</strong></h3>
+              </div>
+              <div class="modal-body">
+                  <span class="text-danger">Are you sure you want to continue with this??
+                      <br> If you continue <strong class="text-success">{{category.name}}</strong> would be deleted permanently.</span>
+              </div>
+              <div class="modal-footer" style="display: flex; align-content: flex-end; justify-content: right;">
+              <button type="button" class="btn btn-warning" data-dismiss="modal" style="margin-right:20px">Close</button>
+              <form action="{{url_for('deletecategory', id=category.id)}}" method="POST">
+                  <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+              </form>
+              </div>
+          </div>
+          </div>
+      </div>
+        {% endfor %}
+        {% endif    %}
+    </tbody>
+</table>
+</div>
+{% endblock page_content %}
