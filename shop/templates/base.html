@@ -13,7 +13,9 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
 <!-- main css  -->
+{% block styles %}
 <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+{% endblock%}
 {% endblock %}
 
 {% block navbar %}
@@ -107,14 +109,7 @@
 
     {% block page_content %}{% endblock %}
 </div>
-<p>The local date and time is {{ moment(current_time).format('LLL') }}.</p>
-<p>That was {{ moment(current_time).fromNow(refresh=True) }}</p>
 
-
-{% block scripts %}
-{{ super() }}
-{{ moment.include_moment() }}
-{% endblock %}
 
 <footer class="text-center background-color=black">
     <div class="container">

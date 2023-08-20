@@ -8,7 +8,7 @@
             <br>
             status: {{orders.status}}
             <br>
-            customer Name: {{customer.name}}
+            customer Name: {{customer.fname}} {{customer.lname}}
             <br>
             customer Email: {{customer.email}}
             <br>
@@ -50,7 +50,9 @@
                     <td width="35%"></td>
                     <td><h5>Tax: ${{tax}}</h5></td>
                     <td><h5>Grand Total: ${{grandtotal}} </h5></td>
-                    <td><a href="" class="btn btn-danger">print PDF</a></td>
+                    <td> <form action="{{url_for('get_pdf', invoice=orders.invoice)}}" method="POST">
+                        <button type="submit" class="btn btn-danger">Print PDF</button>
+                    </form></td>
                 </tr>
             </table>
         </div>
