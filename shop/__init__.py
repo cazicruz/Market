@@ -22,6 +22,7 @@ app.config['SQLALCHEMY_DATABASE_URI']= \
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # app.config['UPLOAD_PROFILE_PHOTOS']= 'static/uploads/profile'
 app.config['UPLOADED_PHOTOS_DEST'] = os.path.join(basedir, 'static/uploads/images')
+app.config['FLASKY_ADMIN']= 'davidonwuli8@gmail.com'
 
 photos = UploadSet('photos', IMAGES)
 configure_uploads(app, photos)

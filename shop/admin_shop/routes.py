@@ -5,7 +5,8 @@ from flask_login import login_user, login_required, current_user, LoginManager, 
 from shop import app, db, bcrypt
 from datetime import datetime
 from .forms import LoginForm, SignUpForm
-from .models import Users
+from .models import Users, Permission
+from .decorators import admin_required, permission_required
 from shop.products.models import Products, Brand, Category
 
 @app.shell_context_processor
@@ -34,6 +35,7 @@ def home():
 #==============admin product route========
 @app.route('/admin', methods=['GET', 'POST'], endpoint='admin')
 @login_required
+@admin_required
 def admin():
     endpoint = request.endpoint
     products = Products.query.all()
@@ -43,6 +45,7 @@ def admin():
 #========= brands view ========
 @app.route('/brands', methods=['GET','POST','PUT','DELETE'])
 @login_required
+@permission_required(Permission.SALES_MANAGER)
 def brands():
    brands = Brand.query.order_by(Brand.id.desc())
    return render_template('admin_temp/brands.html', brands=brands, current_time=datetime.utcnow())
