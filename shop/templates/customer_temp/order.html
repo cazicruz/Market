@@ -7,6 +7,9 @@
             Invoice: {{orders.invoice}}
             <br>
             status: {{orders.status}}
+            {% if orders.transaction_id != None %}
+            Transaction ID: {{orders.transaction_id}}
+            {%endif%}
             <br>
             customer Name: {{customer.fname}} {{customer.lname}}
             <br>
@@ -46,7 +49,27 @@
             </table>
             <table class="table table-sm">
                 <tr>
-                    <td><a href="" class="btn btn-success">Checkout</a></td>
+                    {% if orders.status != 'Received' %}
+                    <td>
+                        <form id="paymentForm">
+                            <div class="form-group">                          
+                              <input type="hidden" value="{{customer.email}}" id="email-address" required />                          
+                            </div>                          
+                            <div class="form-group">                         
+                              <input type="hidden" value="{{grandtotal}}" id="amount" required />                          
+                            </div>                          
+                            <div class="form-group">         
+                              <input type="hidden" value="{{customer.fname}}" id="first-name" />
+                            </div>                          
+                            <div class="form-group">                                                    
+                              <input type="hidden" value="{{customer.lname}}" id="last-name" />
+                            </div>                          
+                            <div class="form-submit">                         
+                              <button type="submit" class="btn btn-outline-success" onclick="payWithPaystack()"> Pay </button>                          
+                            </div>                          
+                          </form>   
+                        </td>
+                        {%endif%}
                     <td width="35%"></td>
                     <td><h5>Tax: ${{tax}}</h5></td>
                     <td><h5>Grand Total: ${{grandtotal}} </h5></td>
@@ -58,4 +81,49 @@
         </div>
     </div>
 </div>
+
+<script>
+const paymentForm = document.getElementById('paymentForm');
+paymentForm.addEventListener("submit", payWithPaystack, false);
+function payWithPaystack(e) {
+    e.preventDefault();
+    var handler = PaystackPop.setup({
+        key: 'pk_test_2e05daa0cd1ac808a4d95935787fd86d7fe681dd', // Replace with your public key
+        email: document.getElementById("email-address").value,
+        amount: document.getElementById("amount").value * 100,
+        currency: 'NGN',
+        ref: ''+Math.floor((Math.random() * 1000000000) + 1), // generates a pseudo-unique reference. Please replace with a reference you generated. Or remove the line entirely so our API will generate one for you
+// label: "Optional string that replaces customer email"
+
+        onClose: function(){
+            alert('Window closed.');
+        },
+
+        callback: function(response){
+            let message = 'Payment complete! pls keep a copy of Reference: ' + response.reference;
+            var resp=response.reference;
+            alert(message);
+            
+            $.ajax({
+                type:"POST",
+                url:"{{url_for('verify_payment',invoice=orders.invoice)}}",
+                data:{ resp: resp },
+                success: function(response) {
+                    if (response[3].status=='success'){
+                        $(".alert").removeClass("alert-warning");
+                        $(".alert").addClass("alert-success");
+                        $(".alert").text("transaction verified");
+                        console.log("Transaction verified");
+                    }else{
+                        $(".alert").text("transaction not found");
+                    }
+                }
+            });
+        },
+    });
+    handler.openIframe();
+}
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://js.paystack.co/v1/inline.js"></script>
 {% endblock page_content %}

@@ -21,6 +21,7 @@ class jsonEncodedDict(db.TypeDecorator):
 class CustomerOrders(db.Model):
     id= db.Column(db.Integer, primary_key=True)
     invoice = db.Column(db.String(20), unique=True, nullable=False)
+    transaction_id = db.Column(db.String(20), default=0,)
     status= db.Column(db.String(20),  default="pending", nullable=False)
     customer_id = db.Column(db.Integer, unique=False, nullable=False)
     date_created = db.Column(db.DateTime, default=datetime.utcnow, nullable=False)

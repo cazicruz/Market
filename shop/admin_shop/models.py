@@ -37,6 +37,9 @@ class Users(UserMixin, db.Model):
     def is_administrator(self):
         return self.can(Permission.ADMIN)
     
+    def __repr__(self) -> str:
+        return f"Users('{self.fname}','{self.lname}','{self.username}','{self.email}','{self.address}','{self.state}','{self.profile_img}','{self.date_created}')"
+    
 class AnonymousUser(AnonymousUserMixin):
     def can(self, permissions):
         return False
@@ -94,5 +97,8 @@ class Roles(db.Model):
             role.default = (role.name == default_role)
             db.session.add(role)
             db.session.commit()
+
+    def __repr__(self) -> str:
+        return f"Roles('{self.name}','{self.permissions}')"
     
 #db.create_all()

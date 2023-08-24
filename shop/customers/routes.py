@@ -1,6 +1,7 @@
 from flask import render_template,render_template_string, session, request, redirect, url_for, flash,current_app,make_response
 from flask_login import login_required, current_user
 import secrets
+import requests
 from datetime import datetime
 import pdfkit
 from shop import app, db, photos
@@ -9,6 +10,7 @@ from shop.products.routes import brands, category
 from shop.customers.models import CustomerOrders
 from shop.admin_shop.models import Users
 from .pdf_temp import temp_pdf
+
 
 pdfkit_config = pdfkit.configuration(wkhtmltopdf='C:\Program Files\wkhtmltopdf\\bin\wkhtmltopdf.exe')
 
@@ -45,11 +47,15 @@ def order(invoice):
         customer_id = current_user.id
         customer= Users.query.filter_by(id=customer_id).first()
         orders= CustomerOrders.query.filter_by(customer_id=customer_id, invoice=invoice).first()
-        for key, prod in orders.orders.items():
-            price= prod['price']
-            subtotal+= float( price) * int(prod['quantity'])
-            tax= ("%.2f" % (.06*float(subtotal)))
-            grandtotal = float("%.2f" %(1.06 * subtotal))
+        if orders:
+            for key, prod in orders.orders.items():
+                price= prod['price']
+                subtotal+= float( price) * int(prod['quantity'])
+                tax= ("%.2f" % (.06*float(subtotal)))
+                grandtotal = float("%.2f" %(1.06 * subtotal))
+        else:
+            flash(f"You dont have an Order for Invoice:{invoice} placed","warning")
+            return redirect(url_for('get_order'))
     else:
         return redirect(url_for('login'))
     return render_template('customer_temp/order.html',invoice=invoice, tax=tax, subtotal=subtotal,grandtotal=grandtotal,customer=customer,orders=orders,current_time=datetime.utcnow())
@@ -108,3 +114,36 @@ def get_pdf(invoice):
     return request(url_for('get_order'))
 
 
+
+#======work in progress  has bug =============
+@app.route('/paymentverify/<invoice>', methods=['POST','GET'])
+def verify_payment( invoice):
+    reference = request.form.get("resp")
+    print(reference)
+
+    url=f'https://api.paystack.co/transaction/verify/{reference}'
+    headers = {
+        'Authorization': 'Bearer sk_test_b1474a2a61c72e7185229cf3153d603d11562ca7'
+    }
+    print(url)
+    if request.method=='POST':
+        response = requests.get(url, headers=headers)
+        response_data = response.json()
+        status = response_data.get('data', {}).get('status')
+        print(response)
+        if status=='success':
+            orders= CustomerOrders.query.filter_by(customer_id=current_user.id, invoice=invoice).first()
+            print(orders)
+            if orders:
+                orders.transaction_id=reference
+                orders.status= 'Received'
+                db.session.add(orders)
+                flash(f'Transaction with reference ID:{reference} Recieved'
+                        'note this is your new invoice number','success')
+                db.session.commit()
+        else:
+            flash(f'Order status still pending','warning')
+    else:
+        flash(f'error occured while verifing error', 'warning')
+
+    return request(url_for(get_order))

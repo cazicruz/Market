@@ -24,7 +24,7 @@ class SignUpForm(FlaskForm):
     profile_img = FileField('Image', validators=[FileAllowed(['jpg', 'jpeg', 'png'], 'image only pls')])
     submit = SubmitField('submit')
 
-    def validate_user(self, username):
+    def validate_username(self, username):
         user = Users.query.filter_by(username=username.data).first()
         if user:
             raise ValidationError("Username already exists.")

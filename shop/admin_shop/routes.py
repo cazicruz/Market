@@ -1,13 +1,15 @@
 import os
-from flask import render_template, session, request, redirect, url_for, flash
+from flask import render_template, session, request, redirect, url_for, flash,abort
 from werkzeug.utils import secure_filename
 from flask_login import login_user, login_required, current_user, LoginManager, logout_user
 from shop import app, db, bcrypt
-from datetime import datetime
+from datetime import datetime, timedelta
 from .forms import LoginForm, SignUpForm
 from .models import Users, Permission
 from .decorators import admin_required, permission_required
 from shop.products.models import Products, Brand, Category
+from .mail_sender import send_email, send_otp_mail
+import secrets
 
 @app.shell_context_processor
 def make_shell_context():
@@ -60,29 +62,35 @@ def categories():
 #================ sign-up view=================
 @app.route('/sign-up', methods=['GET', 'POST'], endpoint='signUp')
 def signUp():
-    form = SignUpForm(request.form)
+    form = SignUpForm()
+    try:
+        if form.validate_on_submit():
+            hash_password = bcrypt.generate_password_hash(form.password1.data)
 
-
-    if form.validate_on_submit():
-        hash_password = bcrypt.generate_password_hash(form.password1.data)
-
-        img = request.files['profile_img']
-        filename = secure_filename(img.filename)
-        path = os.path.join(app.config['UPLOADED_PHOTOS_DEST'], filename)
-        if os.path.exists(path):
-            flash('Image already exists')
-            ''' remember to add a random string to the filename to avoid overwriting existing files
-            or add current_user to the filename to avoid overwriting existing files'''
-        if img == '':
-            flash('No image selected for uploading')
-        else:
-           img.save(path)
-
-        user = Users(fname=request.form.get('fname'), lname=form.lname.data, username=form.username.data, email=form.email.data, password=hash_password,profile_img=path)
-        db.session.add(user)
-        db.session.commit()
-        flash('Welcome, thank you for registering.', 'success')
-        return redirect(url_for('home'))
+            img = request.files['profile_img']
+            if img:
+                filename = secure_filename(img.filename)
+                path = os.path.join(app.config['UPLOADED_PHOTOS_DEST'], filename)
+                if os.path.exists(path):
+                    flash('Image already exists')
+                    ''' remember to add a random string to the filename to avoid overwriting existing files
+                    or add current_user to the filename to avoid overwriting existing files'''
+                if img:
+                    img.save(path)
+                user = Users(fname=request.form.get('fname'), lname=form.lname.data, username=form.username.data, email=form.email.data, password=hash_password,profile_img=path)
+                db.session.add(user)
+                db.session.commit()
+                flash('Welcome, thank you for registering.', 'success')
+                return redirect(url_for('home'))
+            else:
+                user = Users(fname=request.form.get('fname'), lname=form.lname.data, username=form.username.data, email=form.email.data, password=hash_password)
+                db.session.add(user)
+                db.session.commit()
+                flash('Welcome, thank you for registering.', 'success')
+                return redirect(url_for('home'))
+    except Exception as e:
+       flash(f'error occured while signing you up','danger')
+           
     return render_template("admin_temp/register.html", form=form,current_time=datetime.utcnow(), endpoint=request.endpoint)
 
 # ===========login view============
@@ -118,6 +126,76 @@ def logout():
    flash('user logged out successfully', 'success')
    return redirect(url_for('login'))
    
+
+#++++++++++++++++++++++++++++++++++++++++++++++++++++forgot password route++++++++++++++++++++
+@app.route('/forgotpassword', methods=['POST','GET'])
+def forgot_pass():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        username = request.form.get('username')
+        try:
+            user = Users.query.filter_by(email=email, username=username).first()
+            if user:
+                print(user)
+                otp = secrets.token_hex(5)
+                session['otp'] = {'otp':otp, 
+                                'date_created':datetime.utcnow(),
+                                'user_id':user.id
+                                }
+                send_email(user.email, 'Password Reset Request', 'admin_temp/otp_mail', user=user.username, otp=otp, admin=app.config['MARKET_MAIL_SENDER'])
+                flash(f'An OTP has been sent to your email address', 'success')
+                return redirect(url_for('reset_pass'))
+        except Exception as e:
+           print(e)
+           flash(f'An unexpected error occurred', 'danger')
+    return render_template('admin_temp/forgotpassword.html')
+
+
+#+++++++++++++++++++++resend otp route+++++++++++++++++++++++++++++++
+@app.route('/resendotp', methods=['POST'])
+def resend_otp():
+    if request.method == 'POST':
+        user = Users.query.filter_by(id=session['otp']['user_id']).first()
+        send_otp_mail(session['otp']['user_id'],user.email,user=user.username)
+        flash(f'A new OTP has been sent to your email address', 'success')
+    else:
+        flash(f'invalid request ', 'danger') 
+        abort(400)  
+    return redirect(request.referrer)
+
+#++++++++++++++++++++++++++++++reset password route+++++++++++++++++++++++++++++++
+@app.route('/resetpassword', methods=['POST','GET'])
+def reset_pass():
+    form = SignUpForm()
+    if request.method == 'POST':
+        otp = request.form.get('otp')
+        password = request.form.get('password1')
+        confirm_password = request.form.get('password2')
+        try:
+            if password == confirm_password:
+                if session['otp']['otp'] == otp:
+                    if session['otp']['date_created'].replace(tzinfo=None) + timedelta(minutes=5) > datetime.utcnow():
+                        user = Users.query.filter_by(id=session['otp']['user_id']).first()
+                        user.password = bcrypt.generate_password_hash(password)
+                        db.session.add(user)
+                        db.session.commit()
+                        session.pop('otp')
+                        flash(f'Password reset successfully', 'success')
+                        return redirect(url_for('login'))
+                    else:
+                        flash(f'OTP expired', 'danger')
+                        return redirect(url_for('forgot_pass'))
+                else:
+                    flash(f'OTP does not match', 'danger')
+                    return redirect(url_for('forgot_pass'))
+            else:
+                flash(f'Passwords do not match', 'danger')
+                return redirect(url_for('reset_pass'))
+        except Exception as e:
+            print(e)
+            flash(f'An unexpected error occurred while resetting your Password', 'danger')
+            return redirect(url_for('forgot_pass'))
+    return render_template('admin_temp/resetpassword.html',form=form)
 
 
 #==================== handles errors 404 and 500================= 

@@ -7,6 +7,7 @@ from flask_moment import Moment
 from flask_uploads import IMAGES, UploadSet, configure_uploads
 from flask_migrate import Migrate
 from flask_msearch import Search
+from flask_mail import Mail
 
 #from flask_uploads import UploadSet, IMAGES, configure_uploads
 
@@ -28,6 +29,15 @@ photos = UploadSet('photos', IMAGES)
 configure_uploads(app, photos)
 #================ setting the max size of files to 16MB =================
 app.config['MAX_CONTENT_LENGTH'] = 16*1024*1024
+#==============flask mail config=============
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME') or 'casmird70@gmail.com'
+app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD') or 'rrtgcnljlnqnadkv'
+app.config['MARKET_MAIL_SUBJECT_PREFIX'] = '[Market]'
+app.config['MARKET_MAIL_SENDER'] = 'casmird70@gmail.com'
+
 
 # profile_photo = UploadSet('photos', IMAGES)
 # products_photo = UploadSet('products', IMAGES)
@@ -46,6 +56,7 @@ with app.app_context():
         migrate.init_app(app, db)
 search = Search()
 search.init_app(app)
+mail = Mail(app)
 
 
 from shop.admin_shop import routes
