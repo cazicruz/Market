@@ -1,0 +1,134 @@
+:root {
+    --bg-color: #ebe8dc;
+    --primary-color: #F77F00;
+    --secondary-color: #003049;
+}
+@font-face {
+    font-family: 'Bebas Neue';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url(https://fonts.gstatic.com/s/bebasneue/v14/JTUSjIg69CK48gW7PXoo9Wlhyw.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'poppins', sans-serif;
+    list-style: none;
+
+}
+
+.login{
+    display: flex;
+    align-items: center;
+}
+.login-banner{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 440px;
+    height: 100vh;
+    background-color: var(--bg-color);
+    border-radius: 0px 10px 10px 0px; 
+}
+.login-img{
+    background-image: url(./design_img/SeekPng\ 1.png);
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 330px;
+    height: 260px;
+    margin: 40px;
+}
+.login-container{
+    width: 400px;
+}
+.login_form-control{
+    border-radius: 10px;
+    padding: 5px 16px;
+    margin-bottom: 10px;
+}
+
+.login-container h3{
+    font-family:  cursive,'manrope';
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 114%;
+    margin-bottom: 20px;
+    color: var(--secondary-color);
+}
+.small{
+    display: flex;
+    gap: 10px;
+    font-size: 13px;
+    font-family: 'manrope';
+    color: var(--secondary-color);
+}
+form{
+    font-size: 13px;
+    font-family: 'manrope';
+    color: var(--secondary-color);
+
+}
+
+
+.login-container .btn{
+    text-decoration: none;
+    color: #f4f4f4;
+    font-family: Manrope;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-bottom:20px;
+    padding:10px 50px;
+    background-color: var(--primary-color);
+}
+
+.login-banner h1{
+    font-family: 'Bebas Neue';
+    font-size: 100px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    color: var(--primary-color);
+}
+
+.login-banner h2{
+    font-family: cursive,'manrope';
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    margin: 20px;
+    color: var(--secondary-color);
+}
+.fade1{
+    background-image: url(./design_img/SeekPng\ 1.png);
+}
+.fade2{
+    background-image: url(./design_img/hero1.png);
+}
+.fade3{
+    background-image: url(./design_img/hero2.png);
+}
+.pick1{
+    width: 24px;
+}
+.pick2{
+    width: 8px;
+}
+.dot-selector{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+.dot1,.dot2,.dot3{
+    height: 8px;
+    border-radius: 100px;
+    background: #003049;
+    margin-left: 3px;
+}

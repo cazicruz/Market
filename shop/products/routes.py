@@ -6,6 +6,8 @@ from flask_login import login_required
 from datetime import datetime
 from .models import Brand, Category , Products
 from .forms import AddProducts
+from ..admin_shop.decorators import admin_required, permission_required
+from ..admin_shop.models import Permission
 import secrets
 
 
@@ -58,6 +60,7 @@ def get_category(id):
 #============== add brand view==========
 @app.route('/addbrand',methods=['GET','POST'], endpoint='addbrand')
 @login_required
+@permission_required(Permission.SALES_MANAGER)
 def addBrand():
     # check the brand being added if it already exists and trow an apropraite error flash
     if request.method == 'POST':
@@ -74,6 +77,7 @@ def addBrand():
 
 @app.route('/deletebrand/<int:id>', methods=['POST'])
 @login_required
+@permission_required(Permission.SALES_MANAGER)
 def deletebrand(id):
     brand= Brand.query.get_or_404(id)
     if request.method =='POST':
@@ -87,6 +91,7 @@ def deletebrand(id):
 
 @app.route('/deletecategory/<int:id>', methods=['POST'])
 @login_required
+@permission_required(Permission.SALES_MANAGER)
 def deletecategory(id):
     cat= Category.query.get_or_404(id)
     if request.method =='POST':
@@ -100,6 +105,7 @@ def deletecategory(id):
 
 @app.route('/deleteproduct/<int:id>', methods=['POST'])
 @login_required
+@permission_required(Permission.SALES_MANAGER)
 def deleteproduct(id):
     prod= Products.query.get_or_404(id)
     prod_img = [prod.image_1,prod.image_2,prod.image_3,prod.image_4]
@@ -120,6 +126,7 @@ def deleteproduct(id):
 
 @app.route('/addcategory',methods=['GET','POST'], endpoint='addcategory')
 @login_required
+@permission_required(Permission.SALES_MANAGER)
 def addCategory():
         # check the brand being added if it already exists and trow an apropraite error flash
     if request.method == 'POST':
@@ -137,6 +144,7 @@ def addCategory():
 
 @app.route('/addproducts', methods=['GET','POST'])
 @login_required
+@permission_required(Permission.SALES_MANAGER)
 def addProduct():
     form = AddProducts(request.form)
     cats= Category.query.all()
@@ -174,6 +182,7 @@ def addProduct():
 
 @app.route('/updatecategory/<int:id>', methods=['GET','POST'])
 @login_required
+@permission_required(Permission.SALES_MANAGER)
 def update_category(id):
     category = Category.query.get_or_404(id)
     new_cat = request.form.get('category')
@@ -188,6 +197,7 @@ def update_category(id):
 #=========== updating brands===========
 @app.route('/updatebrand/<int:id>', methods=['GET','POST'])
 @login_required
+@permission_required(Permission.SALES_MANAGER)
 def update_brand(id):
     brand = Brand.query.get_or_404(id)
     new_brand = request.form.get('brand')
@@ -203,6 +213,7 @@ def update_brand(id):
 
 @app.route('/updateproduct/<int:id>',methods=['GET','POST'])
 @login_required
+@permission_required(Permission.SALES_MANAGER)
 def update_product(id):
     brands = Brand.query.all()
     category = Category.query.all()

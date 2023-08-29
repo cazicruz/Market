@@ -1,0 +1,370 @@
+:root {
+    --bg-color: #ebe8dc;
+    --primary-color: #F77F00;
+    --secondary-color: #003049;
+}
+@font-face {
+    font-family: 'Bebas Neue';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url(https://fonts.gstatic.com/s/bebasneue/v14/JTUSjIg69CK48gW7PXoo9Wlhyw.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'poppins', sans-serif;
+    list-style: none;
+
+}
+#hero-section{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center; 
+    background-color: var(--bg-color);
+    height: 100vh;
+    width: 100%;
+    position: relative;
+}
+@keyframes fade {
+    from {
+      
+        transform: translateX(-100%);
+    }
+    50% {
+      
+        transform: translateX(0);
+        transition: background-image 1s ease-in-out;
+
+    }
+    to {
+        background-image: url(./design_img/hero2.png);
+        transform: translateX(100);
+        transition: background-image 1s ease-in-out;
+
+    }
+  }
+.hero-img{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url(./design_img/hero2.png); 
+    background-repeat: no-repeat;
+    background-size: contain;
+    width: 400px;
+    height: 450px;
+    flex-shrink: 0;
+    padding:300px 75px 0px;
+    position: absolute; /* Positioned relative to the .base */
+    top: 130px;
+    z-index: 2; /* Higher value to make it appear above .base */
+    
+    
+}
+.hero-img.fade-1 {
+    background-image: url(./design_img/hero1.png);
+  }
+  
+.hero-img.fade-2 {
+    background-image: url(./design_img/hero2.png);
+  }
+  
+.hero-img.fade-3 {
+    background-image: url(./design_img/hero3.png);
+  }
+
+
+.hero-text-lg{
+    color: var(--primary-color);
+    text-align: center;
+    text-shadow: 0px 0px 50px rgba(0, 0, 0, 0.15);
+    font-family: 'Bebas Neue';
+    font-size: 220px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    position: relative; /* Required for positioning the overlay */
+    z-index: 1; /* Set the stacking order */
+}
+.hero-text-sm{
+    color: var(--secondary-color);
+    text-align: center;
+    font-family: Manrope;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+.hero{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    padding: 0px 7px 38px 6px;
+    justify-content: center;
+    align-items: center; 
+}
+.hero-btn{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center; 
+    padding: 0px 10px 0px 0px;
+    margin-top:100px;
+    position: relative; /* Required for positioning the overlay */
+    z-index: 2; /* Set the stacking order */
+
+}
+
+#latest-items,#brands,#why{
+    padding: 20px 50px;
+}
+.latest-item-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    
+}
+
+.card-text, .card-footer{
+    padding:5px;
+}
+#why{    
+    background-color: var(--bg-color);
+    position: relative;
+}
+#why h2{
+    align-self: flex-start;
+    justify-self: flex-start;
+    color: var(--secondary-color);
+    font-family: Manrope;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+#why h3{
+    color: var(--secondary-color);
+    font-family: Manrope;
+    font-size: 27px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+.why-stamp{
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+    
+
+}
+.why-img{
+    justify-self: center;
+    width: 230px;
+    height: 230px;
+    flex-shrink: 0;
+    background-image: url(./design_img/List_Bars_List_Lines_List_Files_List_Documents_Icon_Gold_G03_watermarked_2k-transformed\ 1.png); 
+    background-repeat: no-repeat;
+    background-size: contain;   
+}
+.why-stamp p{
+    text-align: left;
+    color:var(--secondary-color);
+    font-family: Manrope;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+}
+.why-img1{
+    justify-self: center;
+    width: 230px;
+    height: 230px;
+    flex-shrink: 0;
+    background-image: url(./design_img/Symbol_Fast_Shopping_Gold_G03_watermarked_2k-transformed\ 1.png); 
+    background-repeat: no-repeat;
+    background-size: contain;   
+}
+
+.why-img2{
+    justify-self: center;
+    width: 230px;
+    height: 230px;
+    flex-shrink: 0;
+    background-image: url(./design_img/Gold_Padlock_G03_watermarked_2k-transformed\ 1.png); 
+    background-repeat: no-repeat;
+    background-size: contain;   
+}
+#why .button, .button{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    
+}
+#why .button a, .footer-reg a{
+    text-decoration: none;
+    color: #f4f4f4;
+    font-family: Manrope;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-bottom:20px;
+    padding:10px 50px;
+    background-color: var(--primary-color);
+}
+#brands h2{
+    color: var(--secondary-color);
+    font-family: Manrope;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    margin-bottom: 0px;
+}
+#brands .img-container{
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center; 
+    padding: 0px 10px 0px 0px;
+    margin-top:100px;
+    position: relative; /* Required for positioning the overlay */
+
+}
+#brands .brands-img5{
+    width: 120px;
+    height: 44px; 
+    flex-shrink: 0;
+    background-image: url(./design_img/brands/Tecno-Mobile\ 1.png); 
+    background-repeat: no-repeat;
+    background-size: contain;   
+}
+#brands .brands-img2{
+    width: 96px;
+    height: 96px; 
+    flex-shrink: 0;
+    background-image: url(./design_img/brands/2048px-HP_logo_2012\ 1.png); 
+    background-repeat: no-repeat;
+    background-size: contain;   
+}
+#brands .brands-img1{
+    width: 78.141px;
+    height: 96px; 
+    flex-shrink: 0;
+    background-image: url(./design_img/brands/Apple_logo_black\ 1.png); 
+    background-repeat: no-repeat;
+    background-size: contain;   
+}
+#brands .brands-img0{
+    width: 96px;
+    height: 96px; 
+    flex-shrink: 0;
+    background-image: url(./design_img/brands/Dell_Logo\ 1.png); 
+    background-repeat: no-repeat;
+    background-size: contain;   
+}
+
+#brands .brands-img3{
+    width: 200px;
+    height: 64px;
+    flex-shrink: 0;
+    background-image: url(./design_img/brands/Infinix_logo\ 1.png); 
+    background-repeat: no-repeat;
+    background-size: contain;   
+}
+#brands .brands-img4{
+    width: 200px;
+    height: 44px;
+    flex-shrink: 0;
+    background-image: url(./design_img/brands/Samsung-Logo-2\ 1.png); 
+    background-repeat: no-repeat;
+    background-size: contain;   
+}
+#footer{
+    
+    background-color: var(--bg-color);
+    margin-top: 20px;
+    position: relative;
+}
+
+#footer h2{
+    color: var(--secondary-color);
+    font-family: Bebas Neue;
+    font-size: 27px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-top:20px
+}
+.footer-header {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center; 
+    padding: 0px 10px 0px 100px;
+
+
+}
+.footer-reg {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center; 
+    margin-top:10px;
+}
+.footer-reg h5{
+    color: var(--secondary-color);
+    font-family: Manrope;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+.sitemap{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center; 
+    padding: 0px 10px 0px 100px;
+    margin-top:20px;
+}
+.sitemap h3{
+    color: var(--secondary-color);
+    font-family: Manrope;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+.footer-bottom{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding-bottom: 40px;
+}
+.footer-bottom p, .footer-bottom a{
+    color: var(--secondary-color);
+    font-family: Manrope;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+.footer-bottom h3{
+    color: var(--secondary-color);
+    font-family: Manrope;
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}

@@ -1,7 +1,12 @@
 {% extends "base.html" %}
 
 {% block page_content %}
-<div class="container-fluid">
+<div class="container-fluid brandscat">
+    {% if brands %}
+    <h2 class="float-center">Brands List</h2>
+    {% else %}
+    <h2 class="float-center">Categories List</h2>
+    {% endif%}
 <table class="table table-sm table-condensed table-striped table-hover table-responsive-sm">
     <thead>
         <th>S/N</th>

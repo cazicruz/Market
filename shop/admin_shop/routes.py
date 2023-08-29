@@ -3,6 +3,7 @@ from flask import render_template, session, request, redirect, url_for, flash,ab
 from werkzeug.utils import secure_filename
 from flask_login import login_user, login_required, current_user, LoginManager, logout_user
 from shop import app, db, bcrypt
+from sqlalchemy.exc import SQLAlchemyError
 from datetime import datetime, timedelta
 from .forms import LoginForm, SignUpForm
 from .models import Users, Permission
@@ -28,7 +29,6 @@ def load_user(user_id):
 
 #================= home view================
 @app.route('/', endpoint='home')
-@login_required
 def home():
     products = Products.query.all()
     brands = Brand.query.join(Products, (Brand.id == Products.brand_id)).all()
@@ -47,7 +47,7 @@ def admin():
 #========= brands view ========
 @app.route('/brands', methods=['GET','POST','PUT','DELETE'])
 @login_required
-@permission_required(Permission.SALES_MANAGER)
+@admin_required
 def brands():
    brands = Brand.query.order_by(Brand.id.desc())
    return render_template('admin_temp/brands.html', brands=brands, current_time=datetime.utcnow())
@@ -55,6 +55,7 @@ def brands():
 #========= category view ========
 @app.route('/categories', methods=['GET','POST','PUT','DELETE'])
 @login_required
+@admin_required
 def categories():
    categories = Category.query.order_by(Category.id.desc())
    return render_template('admin_temp/brands.html', categories=categories, current_time=datetime.utcnow())
@@ -89,7 +90,7 @@ def signUp():
                 flash('Welcome, thank you for registering.', 'success')
                 return redirect(url_for('home'))
     except Exception as e:
-       flash(f'error occured while signing you up','danger')
+       flash(f'error occured while signing you up{e}','danger')
            
     return render_template("admin_temp/register.html", form=form,current_time=datetime.utcnow(), endpoint=request.endpoint)
 
@@ -154,13 +155,17 @@ def forgot_pass():
 #+++++++++++++++++++++resend otp route+++++++++++++++++++++++++++++++
 @app.route('/resendotp', methods=['POST'])
 def resend_otp():
-    if request.method == 'POST':
-        user = Users.query.filter_by(id=session['otp']['user_id']).first()
-        send_otp_mail(session['otp']['user_id'],user.email,user=user.username)
-        flash(f'A new OTP has been sent to your email address', 'success')
-    else:
-        flash(f'invalid request ', 'danger') 
-        abort(400)  
+    try:
+        if request.method == 'POST':
+            user = Users.query.filter_by(id=session['otp']['user_id']).first()
+            send_otp_mail(session['otp']['user_id'],user.email,user=user.username)
+            flash(f'A new OTP has been sent to your email address', 'success')
+        else:
+            flash(f'invalid request ', 'danger') 
+            abort(400)
+    except Exception as e:
+        print(e)
+        flash(f'An unexpected error occurred', 'danger')
     return redirect(request.referrer)
 
 #++++++++++++++++++++++++++++++reset password route+++++++++++++++++++++++++++++++
@@ -194,6 +199,7 @@ def reset_pass():
         except Exception as e:
             print(e)
             flash(f'An unexpected error occurred while resetting your Password', 'danger')
+            db.session.rollback()
             return redirect(url_for('forgot_pass'))
     return render_template('admin_temp/resetpassword.html',form=form)
 

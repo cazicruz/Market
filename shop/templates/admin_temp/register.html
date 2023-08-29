@@ -1,9 +1,37 @@
-{% extends "base.html" %}
+{% extends "./admin_temp/login.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 {% block title %}Market - Register{% endblock %}
 
-{% block page_content %}
-<div class="container form-container">
-  {{wtf.quick_form(form)}}
+{% block auth_form %}
+<div class="container login-container reg">
+  <h3>Register</h3>
+  {% from "_formhelpers.html" import render_field %}
+<form action="" method="POST" enctype="multipart/form-data">
+  {{form.hidden_tag()}}
+  <div class="small">
+    <div>
+      {{ render_field(form.fname, class="login_form-control form-control inline", placeholder="first name")}}
+    </div>
+    <div>
+      {{ render_field(form.lname, class="login_form-control form-control inline", placeholder="last name")}}
+    </div>
+  </div>
+  {{ render_field(form.username, class="login_form-control form-control", placeholder="UserName")}}
+  {{ render_field(form.email, class="login_form-control form-control", placeholder="Email")}}
+  {{ render_field(form.address, class="login_form-control form-control", placeholder="Address")}}
+  <div class="small">
+    <div>
+      {{ render_field(form.password1, class="login_form-control form-control", placeholder="password")}}
+    </div>
+    <div>
+      {{ render_field(form.password2, class="login_form-control form-control", placeholder="confirm password")}}
+    </div>
+  </div>
+  {{ render_field(form.profile_img, class="login_form-control form-control", placeholder="Password")}}
+  {{ form.submit( class_=" btn form-control login_form-control")}}
+
+</form>
+<div>
+  <p>Have an account ?  <a href="{{url_for('login')}}"> Login</a></p>
 </div>
-{% endblock %}
+{% endblock auth_form %}

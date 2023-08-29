@@ -1,9 +1,47 @@
 {% extends "base.html" %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='login.css') }}">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins&family=Manrope&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+{% endblock head %}
 {% import "bootstrap/wtf.html" as wtf %}
+{% block navbar %} {% endblock navbar%}
 
-{% block page_content %}
-<div class="container form-container">
-  {{wtf.quick_form(form)}}
-  <a href="{{url_for('forgot_pass')}}">forgotten password</a>
+{% block content %}
+{{ super() }}
+<div class="login">
+  <div class="login-banner">
+    <h2>Market</h2>
+    <div class="login-img fade1"></div>
+    <p>Sell your tech products on</p>
+    <h1>Market</h1>
+    <p>join our community today!</p>
+    <div class="dot-selector">
+      <div class="dot dot1 pick1" ></div>
+      <div class="dot dot2"></div>
+      <div class="dot dot3"></div>
+    </div>
+  </div>
+  {% block auth_form%}
+  <div class="container login-container">
+    <h3>Login</h3>
+    {% from "_formhelpers.html" import render_field %}
+  <form action="" method="POST">
+    {{form.hidden_tag()}}
+    {{ render_field(form.username, class="login_form-control form-control", placeholder="UserName")}}
+    {{ render_field(form.password, class="login_form-control form-control", placeholder="Password")}}
+    {{ form.loginButton( class_=" btn form-control login_form-control")}}
+
+  </form>
+  <div>
+    <a href="{{url_for('forgot_pass')}}">Forgotten Password ?</a>
+    <p>Don't have an account ?  <a href="{{url_for('signUp')}}"> Register</a></p>
+  </div>
+  {% endblock auth_form%}
+  </div>
 </div>
-{% endblock %}
+<script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+{% endblock content %}
+
+{% block footer %} {% endblock footer%}

@@ -11,6 +11,7 @@
 <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
 <!-- main css  -->
 {% block styles %}
@@ -19,7 +20,7 @@
 {% endblock %}
 
 {% block navbar %}
-<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #bfe4ff; " id="nav">   
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e9e5d4; " id="nav">   
     <h3 class=" ml-5 mr-auto text-center "><a class=" text-center " href="{{ url_for('home') }} ">Market </a></h3>
 
     <form class="d-flex ml-lg-5 mr-4" action="{{url_for('search')}}" style="display: flex; align-items: center; justify-content: center;">
@@ -95,8 +96,10 @@
 
 
 {% block content %}
-<div  class="container">
+<div  class="">
+    {% block msg%}
     {% include "_messages.html" %}
+    {%endblock msg%}
 
     {% block searchbar %}
     <!-- <div class="search-container">
@@ -107,18 +110,61 @@
       </div> -->
     {% endblock searchbar %}
 
-    {% block page_content %}{% endblock %}
+    {% block page_content %}
+    {% endblock page_content %}
 </div>
 
-
-<footer class="text-center background-color=black">
-    <div class="container">
-        <hr>
-        <p>2023 Marvel-Clinic Copyright &#169;</p>
+{% block footer %}
+<footer id="footer" >
+    <div class="mt-5 footer-header ">
+        <h2 class="">Market <i class="fas fa-solid fa-store fa-lg"></i></h2>
+    </div>
+    {% if not current_user.is_authenticated %}
+    <div class="footer-reg">
+        <h5>New to ByteMarket? Join Us Now</h5>
+        <a href="{{url_for('signUp')}}" class="btn btn-warning hero-button text-center">Sign Up</a>
+    </div>
+    {% endif %}
+    <div class="sitemap">
+        <div>
+            <h2>Help</h2>
+            <a href=""><h3>Help Center</h3></a>
+            <a href=""><h3>Contact Us</h3></a>
+            <a href=""><h3>How to Shop</h3></a>
+            <a href=""><h3>Delivery Timeline</h3></a>
+        </div>
+        <div>
+            <h2>About</h2>
+            <a href=""><h3>About Market</h3></a>
+            <a href=""><h3>Terms and Condition</h3></a>
+            <a href=""><h3>Privacy Policy</h3></a>
+            <a href=""><h3>Return Policy</h3></a>
+        </div>
+        <div>
+            <h2>Earn</h2>
+            <a href=""><h3>Become A Seller</h3></a>
+            <a href=""><h3>Become An Affiliate</h3></a>
+            <a href=""><h3>Market Pay</h3></a>
+            <a href=""><h3>Advertise Your Product</h3></a>
+        </div>
+    </div>
+    <hr>
+    <div class="footer-bottom">
+        <div class="footer-bottom-left">
+            <h3>Market</h3>
+            <p>© 2021 Market. All Rights Reserved.</p>
+        </div>
+        <div class="footer-bottom-right">
+            <a href=""><i class="fab fa-facebook-f"></i></a>
+            <a href=""><i class="fab fa-twitter"></i></a>
+            <a href=""><i class="fab fa-instagram"></i></a>
+            <a href=""><i class="fab fa-linkedin-in"></i></a>
+        </div>
     </div>
 </footer>
+{% endblock footer %}
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js" integrity="sha384-+sLIOodYLS7CIrQpBjl+C7nPvqq+FbNUBDunl/OZv93DB7Ln/533i8e/mZXLi/P+" crossorigin="anonymous"></script>
 
-{% endblock %}
+{% endblock content %}

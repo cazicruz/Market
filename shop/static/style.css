@@ -1,3 +1,16 @@
+:root {
+    --bg-color: #ebe8dc;
+    --primary-color: #F77F00;
+    --secondary-color: #003049;
+}
+@font-face {
+    font-family: 'Bebas Neue';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url(https://fonts.gstatic.com/s/bebasneue/v14/JTUSjIg69CK48gW7PXoo9Wlhyw.woff2) format('woff2');
+    unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  }
 *{
     box-sizing: border-box;
     margin: 0;
@@ -42,7 +55,7 @@ nav ul li, a{
 .card{
     box-shadow: 0 2px 3px rgba(0,0,0,0.05);
 }
-.form-container{
+/* .form-container{
     margin-top: 50px;
    padding: 10px;
     max-width: 40%;
@@ -50,22 +63,16 @@ nav ul li, a{
     border-radius: 20px;
     text-align: center;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     box-shadow:gray 0px 2px 5px ;
-}
+} */
 .bigger_text{
     font-size: 20px;
     color: indigo;
 }
 
-.form-sign-up{
-    padding:10px;
-}
-.form-sign-up .file-input{
-    padding: 20px 0;
-}
+
 .edit{
     background-color: aqua;
     color: #0c0c0c;
@@ -95,4 +102,105 @@ nav ul li, a{
     background-repeat:no-repeat;
     background-position:center;
 
+}
+#footer{
+    
+    background-color: var(--bg-color);
+    margin-top: 20px;
+    position: relative;
+    width: 100%;
+}
+.footer-reg a{
+    text-decoration: none;
+    color: #f4f4f4;
+    font-family: Manrope;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-bottom:20px;
+    padding:10px 50px;
+    background-color: var(--primary-color);
+}
+
+#footer h2{
+    color: var(--secondary-color);
+    font-family: Bebas Neue;
+    font-size: 27px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    margin-top:20px
+}
+.footer-header {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center; 
+    padding: 0px 10px 0px 100px;
+
+
+}
+.footer-reg {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center; 
+    margin-top:10px;
+}
+.footer-reg h5{
+    color: var(--secondary-color);
+    font-family: Manrope;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+.sitemap{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center; 
+    padding: 0px 10px 0px 100px;
+    margin-top:20px;
+}
+.sitemap h3{
+    color: var(--secondary-color);
+    font-family: Manrope;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+.footer-bottom{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    padding-bottom: 40px;
+}
+.footer-bottom p, .footer-bottom a{
+    color: var(--secondary-color);
+    font-family: Manrope;
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+.footer-bottom h3{
+    color: var(--secondary-color);
+    font-family: Manrope;
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+/* template specific style */
+.brandscat{
+    margin:50px 0px;
+    height: 100vh;
 }

@@ -1,1 +1,176 @@
 {% extends "base.html" %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='landing_page.css') }}">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins&family=Manrope&display=swap">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+{% endblock head %}
+
+{% block content %}
+{% include "_messages.html" %}
+<header id="hero-section">
+    <div class="container-fluid hero mt-5">
+        <p class="hero-text-sm">Your one stop Shopping</p>
+        <h1 class="hero-text-lg">
+            DESTINATION
+        </h1>
+        <div class="hero-img fade-1">
+            <a href="" class="btn btn-primary hero-button">Shop Now</a>
+        </div>
+        
+    </div>
+    
+</header>
+
+<section id="latest-items">
+    <div class="mt-5 latest-item-header">
+        <h2 class="hero-text-sm">Latest Items</h2>
+        <a href="{{url_for('products')}}" style="color: #F77F00;">see all</a>
+    </div>
+    <div class="row">
+        {% for product in products %}
+        <div class="col-md-2 mt-4">
+            <div class="card mt-3" style="border-radius: 10px;">
+                <img src="{{url_for('static', filename='uploads/images/' + product.image_1)}}" alt="{{product.product_name}}"width="100" height="150" class="card-img-top" style="border-radius: 10px;">
+                <div class="card-body " style="display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding:2px;">
+                    <div style="justify-items: flex-start;">
+                        <p class="text-left card-text m-0"><strong>{{product.product_name|capitalize}}</strong></p>
+                        <p class="text-left card-text m-0" ><strong>${{product.price}}</strong></p>
+                    </div>
+                    {% if product.discount %}
+                    <p style="background-color: brown; color: aliceblue;border-radius: 50%;padding:9px 2px; "> -{{product.discount}}%</p>
+                    {%endif%}
+                </div>
+                <div class="card-footer">
+                    <form action="{{url_for('addcart')}}" method='POST'>
+                        <button type="submit" class="float-right btn-lg btn btn-warning"><i class=" fas fa-duotone fa-cart-arrow-down fa-beat-fade"></i></button>
+                        <input type="hidden" name="product_id" value="{{product.id}}">
+                        <input type="hidden" name="quantity" id="" value="1" >
+                        {% set colors = product.colors.split(',') %}
+                            <select  name="colors" id="" style="visibility:hidden;">
+                            {% for color in colors %}
+                            {% set col = color.split(':') %}
+                            <option  value="{{col[0]}}">{{col[0]|capitalize}}</option>
+                            {% endfor %}
+                            </select>
+                    </form>            
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</section>
+<section id="why" class="container-fluid">
+    <div class="mt-5 why-header ">
+        <h2 >Why Choose Market ?</h2>
+    </div>
+    <div class="container why-stamp">
+        <div class="why-text container">
+            <h3><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="8" cy="8" r="8" fill="#F77F00"/>
+                </svg>  Various Category</h3>
+            <p>
+                <i class="fas fa-duotone fa-circle-dot"></i>At Market, we pride ourselves on offering a vast selection of tech products to suit every taste and budget. From smartphones and laptops to smart home devices and gaming accessories, our platform is home to a diverse range of categories, ensuring that our customers have access to the latest and greatest in tech. With our easy-to-navigate website and intuitive search functionality, finding the perfect product has never been easier!
+            </p>
+        </div>
+        <div class="why-img"></div>
+    </div>
+    <div class="container why-stamp">
+        <div class="why-img1"></div>
+        <div class="why-text container">
+            <h3><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="8" cy="8" r="8" fill="#F77F00"/>
+                </svg>  Fast Delivery</h3>
+            <p>
+                <i class="fas fa-duotone fa-circle-dot"></i>We understand that when it comes to technology, time is of the essence. That's why we offer fast and reliable shipping options to get your products to you as quickly as possible. Our partnerships with top-rated carriers ensure that your products arrive on time and in perfect condition, no matter where you are in the world. Plus, with our real-time tracking and updates, you'll always know where your order is and when to expect it.
+            </p>
+        </div>
+    </div>
+    <div class="container why-stamp">
+        <div class="why-text container">
+            <h3><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <circle cx="8" cy="8" r="8" fill="#F77F00"/>
+                </svg>  Secure Payment</h3>
+                <p>
+                    <i class="fas fa-duotone fa-circle-dot"></i>At ByteMarket, we take your online security seriously. That's why we use the latest encryption and security measures to protect your personal and financial information when you shop with us. Our secure payment gateway ensures that your transactions are safe and reliable, giving you peace of mind when you make a purchase. Plus, with our fraud detection and prevention tools, you can shop with confidence, knowing that we're always working to keep your information safe.
+                </p>
+            </div>
+            <div class="why-img2"></div>
+    </div>
+    <div class="button">
+        <a href="{{url_for('products')}}" class="btn btn-warning hero-button text-center">Shop Now</a>
+    </div>
+</section>
+
+<section id="brands" class="container-fluid">
+    <div class="mt-5 brands-header ">
+        <h2 class="">Some Brands we sell</h2>
+    </div>
+    <div class="img-container">
+        <div class=" brands-img0">
+        </div>
+        <div class=" brands-img1">
+        </div>
+        <div class=" brands-img2">
+        </div>
+        <div class=" brands-img3">
+        </div>
+        <div class="brands-img4">
+        </div>
+        <div class=" brands-img5">
+        </div>
+    </div>
+</section>
+
+{% block footer %}
+<footer id="footer" >
+    <div class="mt-5 footer-header ">
+        <h2 class="">Market <i class="fas fa-solid fa-store fa-lg"></i></h2>
+    </div>
+    <div class="footer-reg">
+        <h5>New to ByteMarket? Join Us Now</h5>
+        <a href="{{url_for('signUp')}}" class="btn btn-warning hero-button text-center">Sign Up</a>
+    </div>
+    <div class="sitemap">
+        <div>
+            <h2>Help</h2>
+            <a href=""><h3>Help Center</h3></a>
+            <a href=""><h3>Contact Us</h3></a>
+            <a href=""><h3>How to Shop</h3></a>
+            <a href=""><h3>Delivery Timeline</h3></a>
+        </div>
+        <div>
+            <h2>About</h2>
+            <a href=""><h3>About Market</h3></a>
+            <a href=""><h3>Terms and Condition</h3></a>
+            <a href=""><h3>Privacy Policy</h3></a>
+            <a href=""><h3>Return Policy</h3></a>
+        </div>
+        <div>
+            <h2>Earn</h2>
+            <a href=""><h3>Become A Seller</h3></a>
+            <a href=""><h3>Become An Affiliate</h3></a>
+            <a href=""><h3>Market Pay</h3></a>
+            <a href=""><h3>Advertise Your Product</h3></a>
+        </div>
+    </div>
+    <hr>
+    <div class="footer-bottom">
+        <div class="footer-bottom-left">
+            <h3>Market</h3>
+            <p>© 2021 Market. All Rights Reserved.</p>
+        </div>
+        <div class="footer-bottom-right">
+            <a href=""><i class="fab fa-facebook-f"></i></a>
+            <a href=""><i class="fab fa-twitter"></i></a>
+            <a href=""><i class="fab fa-instagram"></i></a>
+            <a href=""><i class="fab fa-linkedin-in"></i></a>
+        </div>
+</footer>
+{% endblock footer %}
+<script src="{{ url_for('static', filename='js/index.js') }}"></script>
+
+            {% endblock content%}
