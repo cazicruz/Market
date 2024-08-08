@@ -20,3 +20,7 @@ def send_otp_mail(user_id,to, **kwargs):
                         'user_id':user_id
                         }
     send_email(to,  'Password Reset Request', 'admin_temp/otp_mail', otp=otp,admin=app.config['MARKET_MAIL_SENDER'], **kwargs)
+
+def send_invoice_mail(to, subject, template, **kwargs):
+    send_email(to, subject, template,admin=app.config['MARKET_MAIL_SENDER'], **kwargs)
+    return True

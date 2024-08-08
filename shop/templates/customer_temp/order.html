@@ -7,6 +7,13 @@
             Invoice: {{orders.invoice}}
             <br>
             status: {{orders.status}}
+            {% if orders.status != 'Received' or orders.transaction_id == null %}
+            <form action="{{url_for('verify_payment', invoice=orders.invoice)}}" method="POST">
+                <button type="submit" class="btn btn-success btn-sm " style=" padding: 0px; margin-left: 10px;" >Update status</button>
+            </form>
+
+            {% endif %}
+            <br>
             {% if orders.transaction_id != None %}
             Transaction ID: {{orders.transaction_id}}
             {%endif%}
@@ -102,7 +109,6 @@ function payWithPaystack(e) {
         callback: function(response){
             let message = 'Payment complete! pls keep a copy of Reference: ' + response.reference;
             var resp=response.reference;
-            alert(message);
             
             $.ajax({
                 type:"POST",
@@ -119,6 +125,8 @@ function payWithPaystack(e) {
                     }
                 }
             });
+            alert(message);
+            location.reload();
         },
     });
     handler.openIframe();

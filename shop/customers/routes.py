@@ -10,6 +10,7 @@ from shop.products.routes import brands, category
 from shop.customers.models import CustomerOrders
 from shop.admin_shop.models import Users
 from .pdf_temp import temp_pdf
+from shop.admin_shop.mail_sender import send_invoice_mail
 
 
 pdfkit_config = pdfkit.configuration(wkhtmltopdf='C:\Program Files\wkhtmltopdf\\bin\wkhtmltopdf.exe')
@@ -28,7 +29,7 @@ def add_order():
             db.session.add(order)
             db.session.commit()
             session.pop('shoppingcart')
-            flash(f'Your order has been sent','success')
+            flash(f'Your order has been saved','success')
             return redirect(url_for('order',invoice=invoice))
         except Exception as e:
             print(e)
@@ -119,6 +120,8 @@ def get_pdf(invoice):
 @app.route('/paymentverify/<invoice>', methods=['POST','GET'])
 def verify_payment( invoice):
     reference = request.form.get("resp")
+    if not reference:
+        reference = invoice
     print(reference)
 
     url=f'https://api.paystack.co/transaction/verify/{reference}'
@@ -141,9 +144,14 @@ def verify_payment( invoice):
                 flash(f'Transaction with reference ID:{reference} Recieved'
                         'note this is your new invoice number','success')
                 db.session.commit()
+                send_invoice_mail(app.config['MAIL_USERNAME'] , 'Order Invoice', 'admin_temp/order_mail', invoice=orders.invoice, customer=current_user, orders=orders)
+                return redirect(url_for('get_order'))
         else:
             flash(f'Order status still pending','warning')
     else:
-        flash(f'error occured while verifing error', 'warning')
+        flash(f'error occured while verifing transaction', 'warning')
 
-    return request(url_for(get_order))
+    flash(f'Your order has been sent','success')
+
+
+    return redirect(url_for('get_order'))

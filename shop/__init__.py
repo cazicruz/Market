@@ -37,6 +37,7 @@ app.config['MAIL_USERNAME'] = os.environ.get('MAIL_USERNAME') or 'casmird70@gmai
 app.config['MAIL_PASSWORD'] = os.environ.get('MAIL_PASSWORD') or 'rrtgcnljlnqnadkv'
 app.config['MARKET_MAIL_SUBJECT_PREFIX'] = '[Market]'
 app.config['MARKET_MAIL_SENDER'] = 'casmird70@gmail.com'
+# app.config['MAIL_DEFAULT_SENDER '] = 'casmird70@gmail.com'
 
 
 # profile_photo = UploadSet('photos', IMAGES)
