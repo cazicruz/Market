@@ -9,8 +9,8 @@ from shop.products.models import Brand, Category, Products
 from shop.products.routes import brands, category
 from shop.customers.models import CustomerOrders
 from shop.admin_shop.models import Users
-from .pdf_temp import temp_pdf
 from shop.admin_shop.mail_sender import send_invoice_mail
+# from .pdf_temp import temp_pdf
 # import pdfkit
 
 
