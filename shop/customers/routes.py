@@ -4,7 +4,6 @@ import secrets
 import requests
 import platform
 from datetime import datetime
-import pdfkit
 from shop import app, db, photos
 from shop.products.models import Brand, Category, Products
 from shop.products.routes import brands, category
@@ -12,9 +11,10 @@ from shop.customers.models import CustomerOrders
 from shop.admin_shop.models import Users
 from .pdf_temp import temp_pdf
 from shop.admin_shop.mail_sender import send_invoice_mail
+# import pdfkit
 
 
-pdfkit_config = pdfkit.configuration(wkhtmltopdf='/shop/bin/wkhtmltox_0.12.6.1-2.jammy_amd64.deb')
+# pdfkit_config = pdfkit.configuration(wkhtmltopdf='/shop/bin/wkhtmltox_0.12.6.1-2.jammy_amd64.deb')
 
 @app.route('/addorder')
 @login_required
@@ -88,31 +88,31 @@ def get_order():
 
 
 
-@app.route('/getpdf/<invoice>', methods=['POST'])
-@login_required
-def get_pdf(invoice):
-    if current_user.is_authenticated:
-        grandtotal=0
-        subtotal=0
-        customer_id = current_user.id
-        if request.method=="POST":
-            customer= Users.query.filter_by(id=customer_id).first()
-            orders= CustomerOrders.query.filter_by(customer_id=customer_id, invoice=invoice).first()
-            for key, prod in orders.orders.items():
-                price= prod['price']
-                subtotal+= float( price) * int(prod['quantity'])
-                tax= ("%.2f" % (.06*float(subtotal)))
-                grandtotal = float("%.2f" %(1.06 * subtotal))
+# @app.route('/getpdf/<invoice>', methods=['POST'])
+# @login_required
+# def get_pdf(invoice):
+#     if current_user.is_authenticated:
+#         grandtotal=0
+#         subtotal=0
+#         customer_id = current_user.id
+#         if request.method=="POST":
+#             customer= Users.query.filter_by(id=customer_id).first()
+#             orders= CustomerOrders.query.filter_by(customer_id=customer_id, invoice=invoice).first()
+#             for key, prod in orders.orders.items():
+#                 price= prod['price']
+#                 subtotal+= float( price) * int(prod['quantity'])
+#                 tax= ("%.2f" % (.06*float(subtotal)))
+#                 grandtotal = float("%.2f" %(1.06 * subtotal))
 
             
-            rendered = render_template_string(temp_pdf,invoice=orders.invoice, tax=tax,grandtotal=grandtotal,customer=customer,orders=orders)
+#             rendered = render_template_string(temp_pdf,invoice=orders.invoice, tax=tax,grandtotal=grandtotal,customer=customer,orders=orders)
            
-            pdf = pdfkit.from_string(rendered,False, configuration=pdfkit_config, options={"enable-local-file-access": ""})
-            res = make_response(pdf)
-            res.headers['Content-Type']= 'application/pdf'
-            res.headers['Content-disposition']='inline:filename=invoice.pdf'
-            return res
-    return request(url_for('get_order'))
+#             pdf = pdfkit.from_string(rendered,False, configuration=pdfkit_config, options={"enable-local-file-access": ""})
+#             res = make_response(pdf)
+#             res.headers['Content-Type']= 'application/pdf'
+#             res.headers['Content-disposition']='inline:filename=invoice.pdf'
+#             return res
+    # return request(url_for('get_order'))
 
 
 
