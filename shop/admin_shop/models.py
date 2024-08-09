@@ -16,7 +16,7 @@ class Users(UserMixin, db.Model):
     email = db.Column(db.String(50),unique=True, nullable=False)
     address = db.Column(db.String(50),nullable=True)
     state = db.Column(db.String(50),nullable=True)
-    password = db.Column(db.String(80), nullable=False)
+    password = db.Column(db.String(255), nullable=False)
     profile_img = db.Column(db.String(180), nullable=True, default='profile.jpg')
     date_created = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
     roles_id = db.Column(db.Integer, db.ForeignKey('roles.id'))
