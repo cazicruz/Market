@@ -2,6 +2,7 @@ from flask import render_template,render_template_string, session, request, redi
 from flask_login import login_required, current_user
 import secrets
 import requests
+import platform
 from datetime import datetime
 import pdfkit
 from shop import app, db, photos
@@ -13,8 +14,10 @@ from .pdf_temp import temp_pdf
 from shop.admin_shop.mail_sender import send_invoice_mail
 
 
-pdfkit_config = pdfkit.configuration(wkhtmltopdf='C:\Program Files\wkhtmltopdf\\bin\wkhtmltopdf.exe')
-
+if platform.system() == 'Windows':
+    pdfkit_config = pdfkit.configuration(wkhtmltopdf=r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe')
+else:
+    pdfkit_config = pdfkit.configuration(wkhtmltopdf='/usr/local/bin/wkhtmltopdf')
 
 @app.route('/addorder')
 @login_required
