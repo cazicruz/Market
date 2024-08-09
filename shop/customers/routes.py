@@ -14,7 +14,7 @@ from .pdf_temp import temp_pdf
 from shop.admin_shop.mail_sender import send_invoice_mail
 
 
-pdfkit_config = pdfkit.configuration(wkhtmltopdf='shop/bin/wkhtmltopdf')
+pdfkit_config = pdfkit.configuration(wkhtmltopdf='/shop/bin/wkhtmltox_0.12.6.1-2.jammy_amd64.deb')
 
 @app.route('/addorder')
 @login_required
