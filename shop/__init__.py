@@ -18,7 +18,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = "hardtoguessstring"
 basedir = os.path.abspath(os.path.dirname(__file__))
 
-app.config['SQLALCHEMY_DATABASE_URI']= os.environ.get('SQLALCHEMY_DATABASE_URI') or 'postgresql://new_market_db_user:cpHYf5rQ2HFV3S1BRTNNk3gWPy34VWVu@dpg-cqr22lqj1k6c73dnjld0-a.oregon-postgres.render.com/new_market_db'
+app.config['SQLALCHEMY_DATABASE_URI']= os.environ.get('SQLALCHEMY_DATABASE_URI') or 'postgresql://markets_oatw_user:kZ7NygJSQaY1m1Bzdl3HAy1BQrl1sIP9@dpg-cqr1cfbqf0us7393bpg0-a.oregon-postgres.render.com/markets_oatw'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # app.config['UPLOAD_PROFILE_PHOTOS']= 'static/uploads/profile'
 app.config['UPLOADED_PHOTOS_DEST'] = os.path.join(basedir, 'static/uploads/images')
