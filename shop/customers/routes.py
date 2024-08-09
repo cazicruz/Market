@@ -14,10 +14,7 @@ from .pdf_temp import temp_pdf
 from shop.admin_shop.mail_sender import send_invoice_mail
 
 
-if platform.system() == 'Windows':
-    pdfkit_config = pdfkit.configuration(wkhtmltopdf=r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe')
-else:
-    pdfkit_config = pdfkit.configuration(wkhtmltopdf='/usr/local/bin/wkhtmltopdf')
+pdfkit_config = pdfkit.configuration(wkhtmltopdf='./bin/wkhtmltopdf')
 
 @app.route('/addorder')
 @login_required
