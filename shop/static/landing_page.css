@@ -433,7 +433,8 @@
     }
 
     #footer {
-        padding: 20px;
+        padding: 10px;
+        align-items: flex-start;
     }
 
     .footer-header,
