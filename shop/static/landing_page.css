@@ -414,6 +414,13 @@
         text-align: center;
         gap: 20px; /* Add space between stacked items */
     }
+    
+    .why-text {
+        order: 2; /* Move text below image */
+    }
+    .why-img {
+        order: 1; /* Move image above text */
+    }
 
     .why-img,
     .why-img1,
