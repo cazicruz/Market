@@ -368,3 +368,87 @@
     font-weight: 500;
     line-height: normal;
 }
+
+
+@media (max-width: 768px) {
+    /* General adjustments for mobile view */
+    * {
+        font-size: 14px; /* Adjust base font size */
+    }
+
+    #hero-section {
+        height: auto; /* Allow height to adjust based on content */
+        padding: 20px;
+    }
+
+    .hero-img {
+        width: 100%; /* Adjust image size to fit smaller screens */
+        height: auto;
+        top: 50px;
+        position: relative;
+    }
+
+    .hero-text-lg {
+        font-size: 80px; /* Reduce font size for large text */
+        line-height: 1.2;
+    }
+
+    .hero-text-sm {
+        font-size: 18px; /* Adjust smaller text */
+    }
+
+    .hero-btn {
+        flex-direction: column; /* Stack buttons vertically */
+        margin-top: 50px;
+    }
+
+    #latest-items,
+    #brands,
+    #why {
+        padding: 10px 20px; /* Reduce padding for smaller screens */
+    }
+
+    .why-stamp {
+        flex-direction: column; /* Stack elements vertically */
+        align-items: center;
+        text-align: center;
+        gap: 20px; /* Add space between stacked items */
+    }
+
+    .why-img,
+    .why-img1,
+    .why-img2 {
+        width: 150px; /* Scale down images */
+        height: 150px;
+    }
+
+    .brands-img0,
+    .brands-img1,
+    .brands-img2,
+    .brands-img3,
+    .brands-img4,
+    .brands-img5 {
+        width: 80px; /* Adjust brand image sizes */
+        height: auto;
+    }
+
+    #footer {
+        padding: 20px;
+    }
+
+    .footer-header,
+    .sitemap {
+        flex-direction: column; /* Stack footer elements */
+        align-items: flex-start;
+    }
+
+    .footer-reg h5,
+    .footer-bottom p,
+    .footer-bottom a {
+        font-size: 12px; /* Adjust footer text sizes */
+    }
+
+    .footer-bottom {
+        padding-bottom: 20px; /* Reduce padding */
+    }
+}
