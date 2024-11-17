@@ -72,9 +72,10 @@
             <h3><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="8" cy="8" r="8" fill="#F77F00"/>
                 </svg>  Various Category</h3>
-            <p>
+            <p class='text-content'>
                 <i class="fas fa-duotone fa-circle-dot"></i>At Market, we pride ourselves on offering a vast selection of tech products to suit every taste and budget. From smartphones and laptops to smart home devices and gaming accessories, our platform is home to a diverse range of categories, ensuring that our customers have access to the latest and greatest in tech. With our easy-to-navigate website and intuitive search functionality, finding the perfect product has never been easier!
             </p>
+            <a href="" class="toggle-read-more">Read More</a>
         </div>
         <div class="why-img"></div>
     </div>
@@ -84,9 +85,10 @@
             <h3><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="8" cy="8" r="8" fill="#F77F00"/>
                 </svg>  Fast Delivery</h3>
-            <p>
+            <p class='text-content'>
                 <i class="fas fa-duotone fa-circle-dot"></i>We understand that when it comes to technology, time is of the essence. That's why we offer fast and reliable shipping options to get your products to you as quickly as possible. Our partnerships with top-rated carriers ensure that your products arrive on time and in perfect condition, no matter where you are in the world. Plus, with our real-time tracking and updates, you'll always know where your order is and when to expect it.
             </p>
+            <a href="" class="toggle-read-more">Read More</a>
         </div>
     </div>
     <div class="container why-stamp">
@@ -94,9 +96,10 @@
             <h3><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <circle cx="8" cy="8" r="8" fill="#F77F00"/>
                 </svg>  Secure Payment</h3>
-                <p>
+                <p class='text-content'>
                     <i class="fas fa-duotone fa-circle-dot"></i>At ByteMarket, we take your online security seriously. That's why we use the latest encryption and security measures to protect your personal and financial information when you shop with us. Our secure payment gateway ensures that your transactions are safe and reliable, giving you peace of mind when you make a purchase. Plus, with our fraud detection and prevention tools, you can shop with confidence, knowing that we're always working to keep your information safe.
                 </p>
+                <a href="" class="toggle-read-more">Read More</a>
             </div>
             <div class="why-img2"></div>
     </div>
@@ -172,5 +175,37 @@
 </footer>
 {% endblock footer %}
 <script src="{{ url_for('static', filename='js/index.js') }}"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    // Select all the why-stamp containers
+    document.querySelectorAll(".why-stamp").forEach((container) => {
+        const textElement = container.querySelector(".text-content");
+        const toggleLink = container.querySelector(".toggle-read-more");
+
+        // Get the full text from the attribute
+        const fullText = textElement.textContent;
+        const truncatedText = fullText.substring(0, 200) + "...";
+
+        // Initially set truncated text
+        textElement.textContent = truncatedText;
+
+        // Add click event to toggle link
+        toggleLink.addEventListener("click", (e) => {
+            e.preventDefault(); // Prevent page reload
+
+            // Toggle between full text and truncated text
+            if (textElement.textContent === truncatedText) {
+                textElement.textContent = fullText;
+                toggleLink.textContent = "Read Less";
+            } else {
+                textElement.textContent = truncatedText;
+                toggleLink.textContent = "Read More";
+            }
+        });
+    });
+});
+
+
+</script>
 
             {% endblock content%}

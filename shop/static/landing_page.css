@@ -368,6 +368,23 @@
     font-weight: 500;
     line-height: normal;
 }
+.text-content {
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Limit to 3 lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: 4.5em; /* Approximate height for 3 lines */
+    margin-bottom: 10px;
+}
+
+.toggle-read-more {
+    color: var(--primary-color);
+    text-decoration: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
 
 
 @media (max-width: 768px) {
